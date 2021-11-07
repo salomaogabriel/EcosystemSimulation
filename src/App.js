@@ -3,7 +3,7 @@ import Clock from "./pages/clock/index";
 function App() {
   return (
     <>
-      <Clock timeDuration="10" />
+      <Clock timeDuration="60" />
       <Grid width="40" height="15" />
     </>
   );
