@@ -4,8 +4,34 @@ export default class Node extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      column: props.column,
+      row: props.row,
       terrain: props.terrain,
+      isWater: props.isWater,
+      growPlantsInterval: props.growPlantsInterval * 1000,
+      chanceToGrowPlant: props.chanceToGrowPlant,
+      plantStatus: "",
+      canHavePlants: props.canHavePlants,
+      hasPlants: props.hasPlants,
+      addPlantToNode: props.addPlantToNode,
     };
+  }
+  componentDidMount() {
+    setInterval(() => {
+      this.tryToGrowPlant();
+    }, this.state.growPlantsInterval);
+  }
+  tryToGrowPlant() {
+    if (this.state.isWater && !this.state.canHavePlants) {
+      return;
+    }
+    const randomChance = Math.random() / 2 - 0.3;
+
+    if (randomChance > this.state.chanceToGrowPlant) {
+      //Update value To all
+      this.state.addPlantToNode(this.state.row, this.state.column);
+      this.setState({ plantStatus: "plant" });
+    }
   }
   getTerrainClass(terrain) {
     switch (true) {
@@ -25,7 +51,10 @@ export default class Node extends Component {
     let terrainClass = this.getTerrainClass(this.state.terrain);
     return (
       <>
-        <div className={`node ${terrainClass}`}></div>
+        <div
+          className={`node ${terrainClass} ${this.state.plantStatus}`}
+          id={`node-${this.state.row}-${this.state.column}`}
+        ></div>
       </>
     );
   }

@@ -1,0 +1,13 @@
+Main Idea:
+
+Create a Working ecosystem simulation with PathFinding and mutations
+
+
+TODOs:
+
+Create Working Clock -
+Create Grid - 
+Create Animals
+Use Dijkstra Algorithm in animals movement.
+Create tools to modify simulation
+Create Charts about the simulation

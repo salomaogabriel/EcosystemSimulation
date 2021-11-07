@@ -2,6 +2,7 @@
   margin: auto;
   width: fit-content;
   margin-top: 100px;
+  margin-bottom: 50px;
 }
 .row {
   display: flex;

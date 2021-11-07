@@ -11,6 +11,7 @@ export class Grid extends Component {
       width: props.width,
       height: props.height,
       grid: [],
+      growPlantsInterval: props.timeDuration,
     };
   }
   componentDidMount() {
@@ -22,13 +23,21 @@ export class Grid extends Component {
     for (let row = 0; row < height; row++) {
       let currentRow = [];
       for (let column = 0; column < width; column++) {
-        currentRow.push([]);
+        currentRow.push(createTerrain(column, row));
       }
       grid.push(currentRow);
     }
+    console.log(grid);
     this.setState({ grid: grid });
   }
-
+  addPlantToNode(row, column) {
+    let grid = this.state.grid;
+    const newNode = {
+      ...grid[row][column],
+      hasPlants: true,
+    };
+    grid[row][column] = newNode;
+  }
   render() {
     let grid = this.state.grid;
     return (
@@ -37,7 +46,29 @@ export class Grid extends Component {
           return (
             <div className="row" key={rowKey}>
               {row.map((column, columnKey) => {
-                return <Node key={columnKey} terrain={Math.random(0, 2)} />;
+                const columnValue = column.column;
+                const rowValue = column.row;
+                const terrainType = column.terrainType;
+                const isWater = column.isWater;
+                const chanceToGrowPlant = column.chanceToGrowPlant;
+                const canHavePlants = column.canHavePlants;
+                const hasPlants = column.hasPlants;
+                return (
+                  <Node
+                    key={columnKey}
+                    column={columnValue}
+                    row={rowValue}
+                    terrain={terrainType}
+                    isWater={isWater}
+                    growPlantsInterval={this.state.growPlantsInterval}
+                    chanceToGrowPlant={chanceToGrowPlant}
+                    canHavePlants={canHavePlants}
+                    hasPlants={hasPlants}
+                    addPlantToNode={(row, column) =>
+                      this.addPlantToNode(row, column)
+                    }
+                  ></Node>
+                );
               })}
             </div>
           );
@@ -48,3 +79,20 @@ export class Grid extends Component {
 }
 
 export default Grid;
+
+const createTerrain = (column, row) => {
+  let terrain = Math.random();
+  let grow = Math.random();
+  let canHavePlants = Math.random();
+  const isWater = terrain < 0.2 ? true : false;
+  canHavePlants = canHavePlants < 0.5 ? true : false;
+  return {
+    column,
+    row,
+    terrainType: terrain,
+    isWater: isWater,
+    chanceToGrowPlant: grow,
+    canHavePlants: canHavePlants,
+    hasPlants: false,
+  };
+};
