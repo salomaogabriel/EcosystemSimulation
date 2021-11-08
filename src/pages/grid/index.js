@@ -54,16 +54,21 @@ export class Grid extends Component {
       column = 0;
     for (let i = 0; i < this.state.foxes; i++) {
       [row, column] = this.getRandomLocation();
+      this.state.grid[row][column].hasFox = true;
+
       this.createAnimal(row, column, "rabits");
+      document.getElementById(`node-${row}-${column}`).classList.add("fox");
     }
     for (let i = 0; i < this.state.rabits; i++) {
       [row, column] = this.getRandomLocation();
 
       this.createAnimal(row, column, "plants");
+      this.state.grid[row][column].hasRabbit = true;
+      document.getElementById(`node-${row}-${column}`).classList.add("rabbit");
     }
   }
   createAnimal(row, column, diet) {
-    let animal = new Animal(column, row, diet);
+    let animal = new Animal(column, row, diet, this.state.grid);
     console.log(animal);
   }
   getRandomLocation() {
@@ -76,10 +81,6 @@ export class Grid extends Component {
       column = Math.floor(Math.random() * this.state.width);
       if (!grid[row][column].hasAnimal && !grid[row][column].isWater) {
         hasPosition = true;
-        grid[row][column].hasAnimal = true;
-        document
-          .getElementById(`node-${row}-${column}`)
-          .classList.add("animal");
       }
     }
     this.setState({ grid: grid });
@@ -138,6 +139,10 @@ const createTerrain = (column, row) => {
     isWater: isWater,
     chanceToGrowPlant: grow,
     canHavePlants: canHavePlants,
-    hasAnimal: false,
+    hasRabbit: false,
+    hasFox: false,
+    hasPlant: false,
+    distance: Infinity,
+    isVisited: false,
   };
 };

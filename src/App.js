@@ -4,7 +4,7 @@ function App() {
   return (
     <>
       <Clock timeDuration="60" />
-      <Grid width="40" height="15" timeDuration="60" rabits="1" foxes="10" />
+      <Grid width="40" height="15" timeDuration="60" rabits="1" foxes="0" />
     </>
   );
 }

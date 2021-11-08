@@ -1,4 +1,4 @@
-let numberOfGenes = 5;
+let numberOfGenes = 6;
 export default class Genes {
   constructor(mutation = 4, male = [], female = []) {
     this.mutation = mutation;
@@ -10,12 +10,14 @@ export default class Genes {
     this.maxThirstyGene = Math.floor(Math.random() * 2);
     this.maxAgeGene = Math.floor(Math.random() * 2);
     this.maxSightGene = Math.floor(Math.random() * 2);
+    this.desirebilityGene = Math.floor(Math.random() * 2);
     this.genes = [
       this.speedGene,
       this.maxHungryGene,
       this.maxThirstyGene,
       this.maxAgeGene,
       this.maxSightGene,
+      this.desirebilityGene,
     ];
   }
   getGenes() {
