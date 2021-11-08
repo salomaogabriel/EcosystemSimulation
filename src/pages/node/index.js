@@ -16,6 +16,8 @@ export default class Node extends Component {
     };
   }
   componentDidMount() {
+    this.tryToGrowPlant();
+
     setInterval(() => {
       this.tryToGrowPlant();
     }, this.state.growPlantsInterval);

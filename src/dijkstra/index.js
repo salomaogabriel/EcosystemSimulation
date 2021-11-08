@@ -8,10 +8,10 @@ export default class Dijkstra {
     this.position = currentPositionNode;
     this.maxReach = maxReach;
   }
-  update(grid, newPosition) {
+  update(grid, newPosition, getWater = false) {
     this.grid = grid;
     this.position = newPosition;
-    return this.getNodesInSight();
+    return this.getNodesInSight(getWater);
   }
   getNodesInShortestPathOrder(finishNode) {
     const nodesInShortestPathOrder = [];
@@ -22,7 +22,7 @@ export default class Dijkstra {
     }
     return nodesInShortestPathOrder;
   }
-  getNodesInSight() {
+  getNodesInSight(getWater) {
     const visitedNodesInOrder = [];
     this.position.distance = 0;
     const unvisitedNodes = this.getAllNodes(this.grid);
@@ -30,7 +30,7 @@ export default class Dijkstra {
       this.sortNodesByDistance(unvisitedNodes);
       const closestNode = unvisitedNodes.shift();
       // If we encounter a wall, we skip it.
-      if (closestNode.isWater) continue;
+      if (closestNode.isWater && !getWater) continue;
       // If the closest node is at a distance of infinity,
       // we must be trapped and should therefore stop.
       if (closestNode.distance === Infinity) return visitedNodesInOrder;
