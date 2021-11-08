@@ -11,7 +11,7 @@ export default class Dijkstra {
   update(grid, newPosition) {
     this.grid = grid;
     this.position = newPosition;
-    console.log(this.getNodesInSight());
+    return this.getNodesInSight();
   }
   getNodesInShortestPathOrder(finishNode) {
     const nodesInShortestPathOrder = [];

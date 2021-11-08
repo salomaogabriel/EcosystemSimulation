@@ -12,10 +12,11 @@ export class Grid extends Component {
       width: props.width,
       height: props.height,
       grid: [],
+      animals: [],
+
       growPlantsInterval: props.timeDuration,
       rabits: props.rabits,
       foxes: props.foxes,
-      animals: [],
     };
   }
   async componentDidMount() {
@@ -69,7 +70,7 @@ export class Grid extends Component {
   }
   createAnimal(row, column, diet) {
     let animal = new Animal(column, row, diet, this.state.grid);
-    console.log(animal);
+    console.log(this.state.grid);
   }
   getRandomLocation() {
     let grid = this.state.grid;
@@ -144,5 +145,6 @@ const createTerrain = (column, row) => {
     hasPlant: false,
     distance: Infinity,
     isVisited: false,
+    previousNode: null,
   };
 };

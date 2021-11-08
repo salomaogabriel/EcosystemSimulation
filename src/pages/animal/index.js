@@ -17,8 +17,8 @@ export default class Animal {
     this.urgeToReproduce = 0;
     this.sex = Math.floor(Math.random() * 2) == 1 ? "Male" : "Female";
     this.createGenes();
-    this.speed = 15;
-    this.sigth = 10;
+    this.speed = 10;
+    this.sigth = 2;
     this.curAction = "";
     this.isAlive = true;
     this.update();
@@ -36,7 +36,21 @@ export default class Animal {
         this.grid[this.row][this.column],
         this.sigth
       );
-      dijkstra.update(this.grid, this.grid[this.row][this.column]);
-    }, 1000);
+      let newGrid = dijkstra.update(
+        this.grid,
+        this.grid[this.row][this.column]
+      );
+
+      document
+        .getElementById(`node-${this.row}-${this.column}`)
+        .classList.remove("rabbit");
+      if (this.row < this.grid.length - 1) {
+        console.log(this.row);
+        this.row++;
+      }
+      document
+        .getElementById(`node-${this.row}-${this.column}`)
+        .classList.add("rabbit");
+    }, 20000 / this.speed);
   }
 }
