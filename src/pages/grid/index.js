@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Node from "../node/index";
+import Animal from "../animal/index";
 import "./index.css";
 
 //Manages the Grid Map of the simulation.
@@ -12,23 +13,33 @@ export class Grid extends Component {
       height: props.height,
       grid: [],
       growPlantsInterval: props.timeDuration,
+      rabits: props.rabits,
+      foxes: props.foxes,
+      animals: [],
     };
   }
-  componentDidMount() {
-    this.createGrid(this.state.width, this.state.height);
+  async componentDidMount() {
+    try {
+      await this.createGrid(this.state.width, this.state.height);
+      this.createAnimals();
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   createGrid(width, height) {
-    let grid = [];
-    for (let row = 0; row < height; row++) {
-      let currentRow = [];
-      for (let column = 0; column < width; column++) {
-        currentRow.push(createTerrain(column, row));
+    return new Promise((resolve) => {
+      let grid = [];
+      for (let row = 0; row < height; row++) {
+        let currentRow = [];
+        for (let column = 0; column < width; column++) {
+          currentRow.push(createTerrain(column, row));
+        }
+        grid.push(currentRow);
       }
-      grid.push(currentRow);
-    }
-    console.log(grid);
-    this.setState({ grid: grid });
+      this.setState({ grid: grid });
+      resolve();
+    });
   }
   addPlantToNode(row, column) {
     let grid = this.state.grid;
@@ -37,6 +48,43 @@ export class Grid extends Component {
       hasPlants: true,
     };
     grid[row][column] = newNode;
+  }
+  createAnimals() {
+    let row,
+      column = 0;
+    for (let i = 0; i < this.state.foxes; i++) {
+      [row, column] = this.getRandomLocation();
+      this.createAnimal(row, column, "rabits");
+    }
+    for (let i = 0; i < this.state.rabits; i++) {
+      [row, column] = this.getRandomLocation();
+
+      this.createAnimal(row, column, "plants");
+    }
+  }
+  createAnimal(row, column, diet) {
+    let animal = new Animal(column, row, diet);
+    console.log(animal);
+    console.log(row, column);
+  }
+  getRandomLocation() {
+    let grid = this.state.grid;
+    let row,
+      column = 0;
+    let hasPosition = false;
+    while (!hasPosition) {
+      row = Math.floor(Math.random() * this.state.height);
+      column = Math.floor(Math.random() * this.state.width);
+      if (!grid[row][column].hasAnimal && !grid[row][column].isWater) {
+        hasPosition = true;
+        grid[row][column].hasAnimal = true;
+        document
+          .getElementById(`node-${row}-${column}`)
+          .classList.add("animal");
+      }
+    }
+    this.setState({ grid: grid });
+    return [row, column];
   }
   render() {
     let grid = this.state.grid;
@@ -91,5 +139,6 @@ const createTerrain = (column, row) => {
     isWater: isWater,
     chanceToGrowPlant: grow,
     canHavePlants: canHavePlants,
+    hasAnimal: false,
   };
 };

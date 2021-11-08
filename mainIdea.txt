@@ -11,3 +11,30 @@ Create Animals
 Use Dijkstra Algorithm in animals movement.
 Create tools to modify simulation
 Create Charts about the simulation
+
+How the genes will work:
+Using Genetic Algorithm
+Every skill of an animal will be represented by a binary value
+
+When mating, a random crossover point will be selected from the genes.
+Eg:
+Parent1 : | 1 | 1 | 1 | 1 | 1 | 1 |
+Parent2 : | 0 | 0 | 0 | 0 | 0 | 0 |
+
+A random crossover point could be the 4th gene.
+The offSpring would be the result of 
+offSpring1 : | 0 | 0 | 0 | 1 | 1 | 1 |
+offSpring2 : | 1 | 1 | 1 | 0 | 0 | 0 |
+
+(The child offSpring "Order" will be selected randomly)
+
+After that, there might occur a mutation in a gene, but its not likely, low random probability.
+
+Eg:
+Before Mutation
+Genes : | 0 | 0 | 0 | 1 | 1 | 1 |
+After Mutation
+Genes : | 0 | 1 | 1 | 0 | 1 | 1 |
+
+**The selection will be decided by the ecosystem itself.
+Article Showing how the Genetic Algorithm works: https://towardsdatascience.com/introduction-to-genetic-algorithms-including-example-code-e396e98d8bf3
