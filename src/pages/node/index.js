@@ -12,7 +12,6 @@ export default class Node extends Component {
       chanceToGrowPlant: props.chanceToGrowPlant,
       plantStatus: "",
       canHavePlants: props.canHavePlants,
-      hasPlants: props.hasPlants,
       addPlantToNode: props.addPlantToNode,
     };
   }

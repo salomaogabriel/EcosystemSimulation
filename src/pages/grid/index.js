@@ -52,7 +52,6 @@ export class Grid extends Component {
                 const isWater = column.isWater;
                 const chanceToGrowPlant = column.chanceToGrowPlant;
                 const canHavePlants = column.canHavePlants;
-                const hasPlants = column.hasPlants;
                 return (
                   <Node
                     key={columnKey}
@@ -63,7 +62,6 @@ export class Grid extends Component {
                     growPlantsInterval={this.state.growPlantsInterval}
                     chanceToGrowPlant={chanceToGrowPlant}
                     canHavePlants={canHavePlants}
-                    hasPlants={hasPlants}
                     addPlantToNode={(row, column) =>
                       this.addPlantToNode(row, column)
                     }
@@ -93,6 +91,5 @@ const createTerrain = (column, row) => {
     isWater: isWater,
     chanceToGrowPlant: grow,
     canHavePlants: canHavePlants,
-    hasPlants: false,
   };
 };

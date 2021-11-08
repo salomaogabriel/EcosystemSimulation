@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import "./index.css";
 export class Clock extends Component {
   constructor(props) {
     super(props);
@@ -39,11 +39,10 @@ export class Clock extends Component {
       seconds %= 3600;
       hour++;
     }
-    // if (hour > 23) {
-    //   hour = 23;
-    //   minutes = 59;
-    // }
-
+    if (hour > 23) {
+      hour = 23;
+      minutes = 59;
+    }
     this.setState({ minutes: minutes });
     this.setState({ hour: hour });
     this.setState({ seconds: seconds });
@@ -73,12 +72,16 @@ export class Clock extends Component {
     return secondsInADay / timeDuration;
   }
   render() {
+    let hour = this.state.hour;
+    let minutes = this.state.minutes;
+    hour = ("0" + hour).slice(-2);
+    minutes = ("0" + minutes).slice(-2);
     return (
-      <>
-        <h1>{`Day: ${this.state.day}`}</h1>
-        <h1>{`Time: ${this.state.timeLeft}`}</h1>
-        <h1>{` ${this.state.hour}:${this.state.minutes}`}</h1>
-      </>
+      <div className="clock" id="clock">
+        <h2>{`Day: ${this.state.day}`}</h2>
+        <h1>{` ${hour}:${minutes}`}</h1>
+        <h3>{`Time left : ${this.state.timeLeft}`}</h3>
+      </div>
     );
   }
 }
