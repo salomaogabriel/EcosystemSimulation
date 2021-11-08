@@ -13,12 +13,16 @@ export default class Animal {
     this.maxThirsty = 100;
     this.thirsty = 0;
     this.urgeToReproduce = 0;
-    this.sex = "male";
-    let newGenes = new Genes(0.2);
-    this.genes = newGenes.getGenes();
+    this.sex = Math.floor(Math.random() * 2) == 1 ? "Male" : "Female";
+    this.createGenes();
     this.speed = 15;
     this.sigth = 0;
     this.curAction = "";
     this.isAlive = true;
+  }
+  createGenes() {
+    let newGenes = new Genes(99, [0, 0, 0, 0, 0], [1, 1, 1, 1, 1]);
+    let genes = newGenes.getGenes();
+    this.genes = genes;
   }
 }

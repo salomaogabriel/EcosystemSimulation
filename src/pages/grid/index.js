@@ -65,7 +65,6 @@ export class Grid extends Component {
   createAnimal(row, column, diet) {
     let animal = new Animal(column, row, diet);
     console.log(animal);
-    console.log(row, column);
   }
   getRandomLocation() {
     let grid = this.state.grid;
