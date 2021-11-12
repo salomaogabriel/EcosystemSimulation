@@ -2,11 +2,13 @@ import Genes from "../genes";
 import { Dijkstra, getNodesInShortestPathOrder } from "../../dijkstra/index";
 
 export default class Animal {
-  constructor(column = 0, row = 0, diet = "plant", grid, animalType) {
+  constructor(column = 0, row = 0, diet = "plants", grid, animalType, getGrid) {
     //position
     this.column = column;
     this.row = row;
     this.grid = grid;
+    this.plantsGrid = grid;
+    this.getGrid = getGrid;
     //information
     this.animalType = animalType;
     this.target = null;
@@ -35,53 +37,74 @@ export default class Animal {
   start() {
     setInterval(() => {
       //INCREASES VALUES
+
       this.age++;
       this.urgeToReproduce++;
     }, 6000);
     let i = 0;
     setInterval(() => {
+      this.worldGrid = this.getGrid();
       //food and water are related to the
       i++;
-      // if (i > 2) return;
+      if (i > 2) return;
       this.hungry++;
       this.thirsty++;
       this.selectMovement();
     }, 20000 / this.speed);
   }
   selectMovement() {
+    let drinkTarget = [];
+    let foodTarget = [];
+    let mateTarget = [];
+    let dijkstraWater = Dijkstra(
+      true,
+      this.grid,
+      this.grid[this.row][this.column],
+      this.sigth
+    );
+    let dijkstraLand = Dijkstra(
+      false,
+      this.grid,
+      this.grid[this.row][this.column],
+      this.sigth
+    );
+
+    for (let i = 0; i < dijkstraWater.length; i++) {
+      const element = dijkstraWater[i];
+
+      if (element.isWater == true) {
+        drinkTarget = element;
+        i = dijkstraWater.length + 2;
+      }
+    }
+
+    for (let x = 0; x < dijkstraLand.length; x++) {
+      const element = dijkstraLand[x];
+      console.log(this.diet);
+      if (
+        this.diet == "plants" &&
+        this.worldGrid[element.row][element.column].hasPlants == true
+      ) {
+        foodTarget = element;
+        x = dijkstraLand.length + 2;
+      }
+    }
+
     let selectedAction = this.selectAction();
 
     if (selectedAction == "drink") {
     }
     if (selectedAction == "mate") {
+      this.setTarget(drinkTarget);
       //future be drink
-
-      let dijkstraFunc = [];
-      dijkstraFunc = Dijkstra(
-        true,
-        this.grid,
-        this.grid[this.row][this.column],
-        this.sigth
-      );
-
-      for (let i = 0; i < dijkstraFunc.length; i++) {
-        const element = dijkstraFunc[i];
-
-        if (element.isWater == true) {
-          this.setTarget(element);
-          return;
-        }
-      }
     }
   }
   setTarget(target) {
-    console.log(target);
     // console.log(this.grid[this.row][this.column]);
     this.target = target;
     let shortestPath = getNodesInShortestPathOrder(target);
     let directionRow = shortestPath[1].row - this.row;
     let directionColumn = shortestPath[1].column - this.column;
-    console.log(directionRow, directionColumn);
 
     this.move(directionRow, directionColumn);
     this.resetGrid();
@@ -163,7 +186,7 @@ const resetNode = (oldNode) => {
     canHavePlants: oldNode.canHavePlants,
     hasRabbit: oldNode.hasRabbit,
     hasFox: oldNode.hasFox,
-    hasPlant: oldNode.hasPlant,
+    hasPlants: oldNode.hasPlants,
     distance: Infinity,
     isVisited: false,
     previousNode: null,

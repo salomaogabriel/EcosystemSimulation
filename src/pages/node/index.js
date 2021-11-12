@@ -36,10 +36,10 @@ export default class Node extends Component {
   }
   getTerrainClass(terrain) {
     switch (true) {
-      case terrain < 0.2:
+      case terrain < 1:
         return "water";
         break;
-      case terrain > 0.2:
+      case terrain > 1:
         return "land";
         break;
 

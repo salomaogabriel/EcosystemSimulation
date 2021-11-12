@@ -69,7 +69,14 @@ export class Grid extends Component {
     }
   }
   createAnimal(row, column, diet, animalType) {
-    let animal = new Animal(column, row, diet, this.state.grid, animalType);
+    let animal = new Animal(
+      column,
+      row,
+      diet,
+      this.state.grid,
+      animalType,
+      this.getGrid.bind(this)
+    );
   }
   getRandomLocation() {
     let grid = this.state.grid;
@@ -85,6 +92,9 @@ export class Grid extends Component {
     }
     this.setState({ grid: grid });
     return [row, column];
+  }
+  getGrid() {
+    return this.state.grid;
   }
   render() {
     let grid = this.state.grid;
@@ -141,7 +151,7 @@ const createTerrain = (column, row) => {
     canHavePlants: canHavePlants,
     hasRabbit: false,
     hasFox: false,
-    hasPlant: false,
+    hasPlants: false,
     distance: Infinity,
     isVisited: false,
     previousNode: null,
