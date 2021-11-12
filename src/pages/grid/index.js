@@ -70,7 +70,6 @@ export class Grid extends Component {
   }
   createAnimal(row, column, diet, animalType) {
     let animal = new Animal(column, row, diet, this.state.grid, animalType);
-    console.log(this.state.grid);
   }
   getRandomLocation() {
     let grid = this.state.grid;
@@ -128,10 +127,10 @@ export class Grid extends Component {
 export default Grid;
 
 const createTerrain = (column, row) => {
-  let terrain = Math.random();
+  let terrain = Math.random() * 10;
   let grow = Math.random();
   let canHavePlants = Math.random();
-  const isWater = terrain < 0.2 ? true : false;
+  const isWater = terrain < 1 ? true : false;
   canHavePlants = canHavePlants < 0.5 ? true : false;
   return {
     column,
