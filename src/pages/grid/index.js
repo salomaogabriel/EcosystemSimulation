@@ -51,22 +51,24 @@ export class Grid extends Component {
     grid[row][column] = newNode;
   }
   createAnimals() {
+    let animals = [];
     let row,
       column = 0;
     for (let i = 0; i < this.state.foxes; i++) {
       [row, column] = this.getRandomLocation();
       this.state.grid[row][column].hasFox = true;
 
-      this.createAnimal(row, column, "rabits", "fox");
+      animals.push(this.createAnimal(row, column, "rabits", "fox"));
       document.getElementById(`node-${row}-${column}`).classList.add("fox");
     }
     for (let i = 0; i < this.state.rabits; i++) {
       [row, column] = this.getRandomLocation();
 
-      this.createAnimal(row, column, "plants", "rabbit");
+      animals.push(this.createAnimal(row, column, "plants", "rabbit"));
       this.state.grid[row][column].hasRabbit = true;
       document.getElementById(`node-${row}-${column}`).classList.add("rabbit");
     }
+    this.setState({ animals: animals });
   }
   createAnimal(row, column, diet, animalType) {
     let animal = new Animal(
@@ -75,8 +77,22 @@ export class Grid extends Component {
       diet,
       this.state.grid,
       animalType,
-      this.getGrid.bind(this)
+      this.getGrid.bind(this),
+      this.moveAnimalPos.bind(this)
     );
+    return animal;
+  }
+  moveAnimalPos(oldPos, newPos, animalType) {
+    let grid = this.state.grid;
+    if (animalType == "rabbit") {
+      grid[oldPos.row][oldPos.column].hasRabbit = false;
+      grid[newPos.row][newPos.column].hasRabbit = true;
+    }
+    if (animalType == "fox") {
+      grid[oldPos.row][oldPos.column].hasFox = false;
+      grid[newPos.row][newPos.column].hasFox = true;
+    }
+    this.setState({ grid: grid });
   }
   getRandomLocation() {
     let grid = this.state.grid;
