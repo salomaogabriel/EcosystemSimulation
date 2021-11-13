@@ -58,7 +58,7 @@ export class Grid extends Component {
       [row, column] = this.getRandomLocation();
       this.state.grid[row][column].hasFox = true;
 
-      animals.push(this.createAnimal(row, column, "rabits", "fox"));
+      animals.push(this.createAnimal(row, column, "rabbit", "fox"));
       document.getElementById(`node-${row}-${column}`).classList.add("fox");
     }
     for (let i = 0; i < this.state.rabits; i++) {

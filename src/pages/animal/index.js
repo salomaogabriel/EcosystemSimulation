@@ -34,6 +34,7 @@ export default class Animal {
     this.speed = 10;
     this.sigth = 5;
     this.curAction = "";
+    this.action = "random";
     this.isAlive = true;
     this.start();
   }
@@ -48,6 +49,9 @@ export default class Animal {
       //INCREASES VALUES
 
       this.age++;
+      if (this.age > this.maxAge) {
+        console.log("die");
+      }
       this.urgeToReproduce++;
     }, 6000);
     let i = 0;
@@ -56,6 +60,12 @@ export default class Animal {
       //food and water are related to the
       i++;
       // if (i > 2) return;
+      if (this.hungry > this.maxHungry) {
+        console.log("die");
+      }
+      if (this.thirsty > this.maxThirsty) {
+        console.log("die");
+      }
       this.hungry++;
       this.thirsty++;
       this.selectMovement();
@@ -123,23 +133,29 @@ export default class Animal {
         x = dijkstraLand.length + 2;
       }
     }
-
     let selectedAction = this.selectAction(drinkTarget, mateTarget, foodTarget);
 
     if (selectedAction == "drink") {
+      this.action = "drink";
       console.log("drinking");
       this.setTarget(drinkTarget);
     }
     if (selectedAction == "mate") {
+      this.action = "mate";
+
       console.log("mating");
       this.setTarget(mateTarget);
     }
-    if (selectedAction == "eat") {
+    if (selectedAction == "food") {
+      this.action = "food";
+
       console.log("eating");
 
       this.setTarget(foodTarget);
     }
     if (selectedAction == "random") {
+      this.action = "random";
+
       console.log("random");
 
       this.moveRandomly();
@@ -205,9 +221,32 @@ export default class Animal {
 
     let directionRow = shortestPath[1].row - this.row;
     let directionColumn = shortestPath[1].column - this.column;
-
+    this.checkForTarget(shortestPath);
     this.move(directionRow, directionColumn);
     this.resetGrid();
+  }
+  checkForTarget(shortestPath) {
+    if (shortestPath[1].isWater && this.action == "drink") {
+      this.thirsty = 1;
+
+      console.log("drinked!");
+    }
+    if (
+      this.worldGrid[shortestPath[1].row][shortestPath[1].column].hasPlants &&
+      this.action == "food" &&
+      this.diet == "plants"
+    ) {
+      console.log("eated!");
+      this.hungry = 0;
+    }
+    if (
+      this.worldGrid[shortestPath[1].row][shortestPath[1].column].hasRabbit &&
+      this.action == "food" &&
+      this.diet == "rabbit"
+    ) {
+      console.log("eated!");
+      this.hungry = 0;
+    }
   }
   resetGrid() {
     let grid = [];
