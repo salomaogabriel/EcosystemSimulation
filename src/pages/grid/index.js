@@ -78,10 +78,31 @@ export class Grid extends Component {
       this.state.grid,
       animalType,
       this.getGrid.bind(this),
-      this.moveAnimalPos.bind(this)
+      this.moveAnimalPos.bind(this),
+      this.killAnimal.bind(this),
+      this.reproduce.bind(this),
+      this.checkForLife.bind(this)
     );
     return animal;
   }
+  checkForLife(row, column) {
+    let animalToKill = this.state.animals.find((animal) => {
+      return animal.row == row && animal.column == column;
+    });
+    if (animalToKill == undefined) {
+      return false;
+    }
+    return true;
+  }
+  killAnimal(row, column) {
+    let animals = this.state.animals;
+    let animalToKill = animals.find((animal) => {
+      return animal.row == row && animal.column == column;
+    });
+    console.log(animalToKill);
+    animalToKill.die();
+  }
+  reproduce(row, column, animalType) {}
   moveAnimalPos(oldPos, newPos, animalType, killAnimal = false) {
     let grid = this.state.grid;
     if (animalType == "rabbit") {

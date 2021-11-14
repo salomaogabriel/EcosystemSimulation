@@ -9,7 +9,10 @@ export default class Animal {
     grid,
     animalType,
     getGrid,
-    moveAnimalPos
+    moveAnimalPos,
+    killAnimal,
+    reproduce,
+    checkForLife
   ) {
     //position
     this.column = column;
@@ -18,6 +21,9 @@ export default class Animal {
     this.plantsGrid = grid;
     this.getGrid = getGrid;
     this.moveAnimalPos = moveAnimalPos;
+    this.killAnimal = killAnimal;
+    this.reproduce = reproduce;
+    this.checkForLife = checkForLife;
     //information
     this.animalType = animalType;
     this.target = null;
@@ -72,7 +78,11 @@ export default class Animal {
     }, 6000);
     this.speedInterval = setInterval(() => {
       this.worldGrid = this.getGrid();
+      if (!this.checkForLife(this.row, this.column)) {
+        this.die();
+      }
       //food and water are related to the
+
       if (this.hungry > this.maxHungry) {
         this.die();
       }
@@ -150,19 +160,15 @@ export default class Animal {
 
     if (selectedAction == "drink") {
       this.action = "drink";
-      console.log("drinking");
       this.setTarget(drinkTarget);
     }
     if (selectedAction == "mate") {
       this.action = "mate";
 
-      console.log("mating");
       this.setTarget(mateTarget);
     }
     if (selectedAction == "food") {
       this.action = "food";
-
-      console.log("eating");
 
       this.setTarget(foodTarget);
     }
@@ -238,7 +244,7 @@ export default class Animal {
   }
   checkForTarget(shortestPath) {
     if (shortestPath[1].isWater && this.action == "drink") {
-      this.thirsty = 0;
+      this.thirsty = 1;
     }
     if (
       this.worldGrid[shortestPath[1].row][shortestPath[1].column].hasPlants &&
@@ -253,6 +259,8 @@ export default class Animal {
       this.diet == "rabbit"
     ) {
       this.hungry = 0;
+      // kill rabbit
+      this.killAnimal(shortestPath[1].row, shortestPath[1].column);
     }
     if (
       this.worldGrid[shortestPath[1].row][shortestPath[1].column].hasRabbit &&
@@ -260,6 +268,8 @@ export default class Animal {
       this.animalType == "rabbit"
     ) {
       this.urgeToReproduce = 0;
+      //reproduce
+      this.reproduce(this.row, this.column, this.animalType);
     }
     if (
       this.worldGrid[shortestPath[1].row][shortestPath[1].column].hasFox &&
@@ -267,6 +277,8 @@ export default class Animal {
       this.animalType == "fox"
     ) {
       this.urgeToReproduce = 0;
+      //reproduce
+      this.reproduce(this.row, this.column, this.animalType);
     }
   }
   resetGrid() {
@@ -334,7 +346,11 @@ export default class Animal {
           return "drink";
         }
       }
-      if (distanceToFood + 5 < distanceToDrink && thirstyLeftBeforeDie > 30)
+      if (
+        distanceToFood + 5 < distanceToDrink &&
+        thirstyLeftBeforeDie > 30 &&
+        this.hungry > 10
+      )
         return "food";
       if (
         distanceToFood < distanceToDrink &&
@@ -342,11 +358,17 @@ export default class Animal {
       )
         return "drink";
     }
+
+    //food
     if (thirstyLeftBeforeDie > hungryLeftBeforeDie) {
       if (distanceToFood < distanceToDrink) {
         return "food";
       }
-      if (distanceToFood > distanceToDrink + 5 && hungryLeftBeforeDie > 30)
+      if (
+        distanceToFood > distanceToDrink + 5 &&
+        hungryLeftBeforeDie > 30 &&
+        this.thirsty > 10
+      )
         return "drink";
       if (
         distanceToFood > distanceToDrink &&
