@@ -102,7 +102,13 @@ export class Grid extends Component {
     console.log(animalToKill);
     animalToKill.die();
   }
-  reproduce(row, column, animalType) {}
+  reproduce(row, column, animalType) {
+    console.log("reproducing...");
+    let diet = animalType == "fox" ? "rabbit" : "plants";
+    let animals = this.state.animals;
+    animals.push(this.createAnimal(row, column, diet, animalType));
+    this.setState({ animals: animals });
+  }
   moveAnimalPos(oldPos, newPos, animalType, killAnimal = false) {
     let grid = this.state.grid;
     if (animalType == "rabbit") {
