@@ -36,7 +36,24 @@ export default class Animal {
     this.curAction = "";
     this.action = "random";
     this.isAlive = true;
+    this.normalInterval = undefined;
+    this.speedInterval = undefined;
     this.start();
+  }
+  die() {
+    //stop intervals
+    console.log("died");
+    clearInterval(this.normalInterval);
+    clearInterval(this.speedInterval);
+    document
+      .getElementById(`node-${this.row}-${this.column}`)
+      .classList.remove(this.animalType);
+    this.moveAnimalPos(
+      this.grid[this.row][this.column],
+      this.grid[this.row][this.column],
+      this.animalType,
+      true
+    );
   }
   createGenes() {
     let newGenes = new Genes(4, [0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1]);
@@ -45,26 +62,22 @@ export default class Animal {
     this.genes = genes;
   }
   start() {
-    setInterval(() => {
+    this.normalInterval = setInterval(() => {
       //INCREASES VALUES
-
       this.age++;
       if (this.age > this.maxAge) {
-        console.log("die");
+        this.die();
       }
       this.urgeToReproduce++;
     }, 6000);
-    let i = 0;
-    setInterval(() => {
+    this.speedInterval = setInterval(() => {
       this.worldGrid = this.getGrid();
       //food and water are related to the
-      i++;
-      // if (i > 2) return;
       if (this.hungry > this.maxHungry) {
-        console.log("die");
+        this.die();
       }
       if (this.thirsty > this.maxThirsty) {
-        console.log("die");
+        this.die();
       }
       this.hungry++;
       this.thirsty++;
@@ -226,15 +239,12 @@ export default class Animal {
   checkForTarget(shortestPath) {
     if (shortestPath[1].isWater && this.action == "drink") {
       this.thirsty = 0;
-
-      console.log("drinked!");
     }
     if (
       this.worldGrid[shortestPath[1].row][shortestPath[1].column].hasPlants &&
       this.action == "food" &&
       this.diet == "plants"
     ) {
-      console.log("eated!");
       this.hungry = 0;
     }
     if (
@@ -242,7 +252,6 @@ export default class Animal {
       this.action == "food" &&
       this.diet == "rabbit"
     ) {
-      console.log("eated!");
       this.hungry = 0;
     }
     if (
@@ -250,7 +259,6 @@ export default class Animal {
       this.action == "mate" &&
       this.animalType == "rabbit"
     ) {
-      console.log("mated!");
       this.urgeToReproduce = 0;
     }
     if (
@@ -258,7 +266,6 @@ export default class Animal {
       this.action == "mate" &&
       this.animalType == "fox"
     ) {
-      console.log("mated!");
       this.urgeToReproduce = 0;
     }
   }

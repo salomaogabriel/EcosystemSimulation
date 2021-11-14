@@ -13,7 +13,9 @@
   background-repeat: no-repeat;
 }
 .plant {
-  background-color: yellow;
+  background-image: url("../../assets/plants.png");
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .rabbit {
   background-image: url("../../assets/rabbit.svg"),
@@ -22,7 +24,9 @@
   background-repeat: no-repeat;
 }
 .fox {
-  background-color: pink;
+  background-image: url("../../assets/fox.svg"), url("../../assets/grass.png");
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .visited {
   background-color: coral;

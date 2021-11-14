@@ -82,7 +82,7 @@ export class Grid extends Component {
     );
     return animal;
   }
-  moveAnimalPos(oldPos, newPos, animalType) {
+  moveAnimalPos(oldPos, newPos, animalType, killAnimal = false) {
     let grid = this.state.grid;
     if (animalType == "rabbit") {
       grid[oldPos.row][oldPos.column].hasRabbit = false;
@@ -91,6 +91,10 @@ export class Grid extends Component {
     if (animalType == "fox") {
       grid[oldPos.row][oldPos.column].hasFox = false;
       grid[newPos.row][newPos.column].hasFox = true;
+    }
+    if (killAnimal) {
+      grid[oldPos.row][oldPos.column].hasRabbit = false;
+      grid[oldPos.row][oldPos.column].hasFox = false;
     }
     this.setState({ grid: grid });
   }
