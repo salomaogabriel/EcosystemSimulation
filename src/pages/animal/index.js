@@ -156,8 +156,6 @@ export default class Animal {
     if (selectedAction == "random") {
       this.action = "random";
 
-      console.log("random");
-
       this.moveRandomly();
       this.resetGrid();
     }
@@ -227,7 +225,7 @@ export default class Animal {
   }
   checkForTarget(shortestPath) {
     if (shortestPath[1].isWater && this.action == "drink") {
-      this.thirsty = 1;
+      this.thirsty = 0;
 
       console.log("drinked!");
     }
@@ -246,6 +244,22 @@ export default class Animal {
     ) {
       console.log("eated!");
       this.hungry = 0;
+    }
+    if (
+      this.worldGrid[shortestPath[1].row][shortestPath[1].column].hasRabbit &&
+      this.action == "mate" &&
+      this.animalType == "rabbit"
+    ) {
+      console.log("mated!");
+      this.urgeToReproduce = 0;
+    }
+    if (
+      this.worldGrid[shortestPath[1].row][shortestPath[1].column].hasFox &&
+      this.action == "mate" &&
+      this.animalType == "fox"
+    ) {
+      console.log("mated!");
+      this.urgeToReproduce = 0;
     }
   }
   resetGrid() {
@@ -277,7 +291,7 @@ export default class Animal {
       this.hungry < this.maxHungry / 10 &&
       this.thirsty < this.maxThirsty / 10
     ) {
-      if (distanceToMate !== 9999) {
+      if (distanceToMate !== 9999 && this.urgeToReproduce > 10) {
         return "mate";
       } else {
         return "random";
@@ -289,14 +303,14 @@ export default class Animal {
       distanceToFood == 9999 &&
       distanceToDrink == 9999
     ) {
-      if (distanceToMate !== 9999) {
+      if (distanceToMate !== 9999 && this.urgeToReproduce > 10) {
         return "mate";
       } else {
         return "random";
       }
     }
     if (urgeToReproduce > 50) {
-      if (distanceToMate !== 9999) {
+      if (distanceToMate !== 9999 && this.urgeToReproduce > 10) {
         return "mate";
       }
 
@@ -343,25 +357,33 @@ export default class Animal {
     if (
       row == -1 &&
       this.row > 0 &&
-      !this.grid[this.row - 1][this.column].isWater
+      !this.grid[this.row - 1][this.column].isWater &&
+      !this.worldGrid[this.row - 1][this.column].hasRabbit &&
+      !this.worldGrid[this.row - 1][this.column].hasFox
     )
       this.row--;
     if (
       row === 1 &&
       this.row < this.grid.length - 1 &&
-      !this.grid[this.row + 1][this.column].isWater
+      !this.grid[this.row + 1][this.column].isWater &&
+      !this.worldGrid[this.row + 1][this.column].hasRabbit &&
+      !this.worldGrid[this.row + 1][this.column].hasFox
     )
       this.row++;
     if (
       column === 1 &&
       this.column < this.grid[0].length - 1 &&
-      !this.grid[this.row][this.column + 1].isWater
+      !this.grid[this.row][this.column + 1].isWater &&
+      !this.worldGrid[this.row][this.column + 1].hasRabbit &&
+      !this.worldGrid[this.row][this.column + 1].hasFox
     )
       this.column++;
     if (
       column == -1 &&
       this.column > 0 &&
-      !this.grid[this.row][this.column - 1].isWater
+      !this.grid[this.row][this.column - 1].isWater &&
+      !this.worldGrid[this.row][this.column - 1].hasRabbit &&
+      !this.worldGrid[this.row][this.column - 1].hasFox
     )
       this.column--;
     this.moveAnimalPos(

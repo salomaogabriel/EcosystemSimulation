@@ -3,16 +3,23 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .land {
-  background-color: green;
+  background-image: url("../../assets/grass.png");
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .water {
-  background-color: blue;
+  background-image: url("../../assets/water.png");
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .plant {
   background-color: yellow;
 }
 .rabbit {
-  background-color: red;
+  background-image: url("../../assets/rabbit.svg"),
+    url("../../assets/grass.png");
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .fox {
   background-color: pink;
